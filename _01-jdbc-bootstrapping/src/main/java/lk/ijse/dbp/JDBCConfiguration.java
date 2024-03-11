@@ -27,7 +27,7 @@ public class JDBCConfiguration {
     }
 
     private static void executeTheQuery() throws SQLException {
-        String sql = "INSERT INTO customers(id, name, address, tel) VALUES('C003', 'Kithmi', 'Jaffna', '0714567685')";
+        String sql = "INSERT INTO customers(id, name, address, tel) VALUES('C004', 'Kithmi', 'Jaffna', '0714567685')";
 
         int affectedRows = statement.executeUpdate(sql);
         System.out.println("affected rows: " + affectedRows);
