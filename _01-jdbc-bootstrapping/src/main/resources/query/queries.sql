@@ -1,8 +1,6 @@
-CREATE
-DATABASE kade;
+CREATE DATABASE kade;
 
-USE
-kade;
+USE kade;
 
 CREATE TABLE customers
 (
