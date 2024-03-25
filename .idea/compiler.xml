@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="_02-statements" />
         <module name="_01-jdbc-bootstrapping" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="_03_design-patterns" target="17" />
       <module name="database-programming" target="17" />
     </bytecodeTargetLevel>
   </component>

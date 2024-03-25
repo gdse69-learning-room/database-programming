@@ -7,6 +7,10 @@
     <groupId>lk.ijse</groupId>
     <artifactId>_02-statements</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>_03_design-patterns</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
