@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/_01-jdbc-bootstrapping/pom.xml" />
+        <option value="$PROJECT_DIR$/_02-statements/pom.xml" />
       </list>
     </option>
   </component>
