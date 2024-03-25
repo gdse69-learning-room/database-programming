@@ -29,6 +29,28 @@ public class PrepareStatementDemo {
         }
     }
 
+    private static void updateCustomer(String id, String name, String address, String tel) throws SQLException {
+        String sql = "UPDATE customers SET name = ?, address = ?, tel = ? WHERE id = ?";
+
+        try(Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/kade",
+                "root",
+                "Ijse@1234"
+        )) {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setObject(1, name);
+            pstm.setObject(2, address);
+            pstm.setObject(3, tel);
+            pstm.setObject(4, id);
+
+            boolean isUpdated = pstm.executeUpdate() > 0;
+            if(isUpdated)
+                System.out.println("customer updated!");
+            else
+                System.out.println("customer not updated!");
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         Scanner input = new Scanner(System.in);
 
@@ -46,6 +68,6 @@ public class PrepareStatementDemo {
 
 //        saveCustomer(id, name, address, tel);
 
-//        updateCustomer(id, name,  address, tel);
+        updateCustomer(id, name,  address, tel);
     }
 }
