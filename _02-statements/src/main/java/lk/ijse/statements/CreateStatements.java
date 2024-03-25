@@ -75,6 +75,44 @@ public class CreateStatements {
 //        connection.close();   // No need
     }
 
+    private static void deleteCustomer() throws SQLException {
+        String sql = "DELETE FROM customers WHERE id = 'C005'";
+
+        try(Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/kade",
+                "root",
+                "Ijse@1234"
+        )) {
+            Statement statement = connection.createStatement();
+            int affectedRows = statement.executeUpdate(sql);
+
+            if(affectedRows > 0)
+                System.out.println("customer deleted successfully!");
+            else
+                System.out.println("customer deleted is not successfully!");
+        }
+    }
+
+    private static void updateCustomer() throws SQLException {
+        String sql = "UPDATE customers SET name = 'Kathrina', address = 'Panadura', tel = '07645873294' WHERE id = 'C003'";
+
+        try(Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/kade",
+                "root",
+                "Ijse@1234"
+        )) {
+            Statement statement = connection.createStatement();
+            int affectedRows = statement.executeUpdate(sql);
+
+            if(affectedRows > 0)
+                System.out.println("customer updated successfully!");
+            else
+                System.out.println("customer not updated!");
+        }
+
+
+    }
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        saveCustomer();
 
@@ -84,7 +122,7 @@ public class CreateStatements {
 
 //        deleteCustomer();
 
-//        updateCustomer();
+        updateCustomer();
 
     }
 }
