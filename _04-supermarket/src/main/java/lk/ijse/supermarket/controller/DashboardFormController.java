@@ -53,13 +53,18 @@ public class DashboardFormController {
         Stage stage = (Stage) rootNode.getScene().getWindow();
 
         stage.setScene(new Scene(anchorPane));
-        stage.setTitle("Dashboard Form");
+        stage.setTitle("Customer Form");
         stage.centerOnScreen();
     }
 
     @FXML
-    void btnItemOnAction(ActionEvent event) {
+    void btnItemOnAction(ActionEvent event) throws IOException {
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/item_form.fxml"));
+        Stage stage = (Stage) rootNode.getScene().getWindow();
 
+        stage.setScene(new Scene(anchorPane));
+        stage.setTitle("Item Form");
+        stage.centerOnScreen();
     }
 
     @FXML
