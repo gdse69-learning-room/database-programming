@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="419.0" prefWidth="530.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.DashboardFormController">
+<AnchorPane fx:id="rootNode" prefHeight="419.0" prefWidth="530.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.DashboardFormController">
     <children>
         <AnchorPane layoutX="19.0" layoutY="37.0" prefHeight="99.0" prefWidth="243.0" style="-fx-background-color: #bdc3c7;">
             <children>
@@ -83,7 +83,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXButton buttonType="RAISED" layoutX="438.0" layoutY="371.0" style="-fx-background-color: #fab1a0;" text="Exit" textFill="WHITE">
+      <JFXButton buttonType="RAISED" onAction="#btnExitOnAction" layoutX="438.0" layoutY="371.0" style="-fx-background-color: #fab1a0;" text="Exit" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
