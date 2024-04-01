@@ -7,11 +7,14 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/_01-jdbc-bootstrapping/pom.xml" />
         <option value="$PROJECT_DIR$/_02-statements/pom.xml" />
+        <option value="$PROJECT_DIR$/_02-statements/_04-supermarket/pom.xml" />
+        <option value="$PROJECT_DIR$/_04-supermarket/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/_02-statements/_03_design-patterns/pom.xml" />
+        <option value="$PROJECT_DIR$/_02-statements/_04-supermarket/pom.xml" />
       </set>
     </option>
   </component>

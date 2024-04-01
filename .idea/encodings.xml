@@ -5,8 +5,12 @@
     <file url="file://$PROJECT_DIR$/_01-jdbc-bootstrapping/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/_02-statements/_03_design-patterns/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/_02-statements/_03_design-patterns/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/_02-statements/_04-supermarket/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/_02-statements/_04-supermarket/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/_02-statements/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/_02-statements/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/_04-supermarket/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/_04-supermarket/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
