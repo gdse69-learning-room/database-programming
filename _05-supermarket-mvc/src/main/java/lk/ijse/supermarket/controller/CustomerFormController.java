@@ -17,7 +17,6 @@ import lk.ijse.supermarket.repository.CustomerRepo;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerFormController {
@@ -58,23 +57,16 @@ public class CustomerFormController {
         String address = txtAddress.getText();
         String tel = txtTel.getText();
 
-        String sql = "INSERT INTO customers VALUES(?, ?, ?, ?)";
+        Customer customer = new Customer(id, name, address, tel);
 
         try {
-            Connection connection = DbConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm = connection.prepareStatement(sql);
-            pstm.setObject(1, id);
-            pstm.setObject(2, name);
-            pstm.setObject(3, address);
-            pstm.setObject(4, tel);
-
-            boolean isSaved = pstm.executeUpdate() > 0;
+            boolean isSaved = CustomerRepo.save(customer);
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
+                clearFields();
             }
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            throw new RuntimeException(e);
         }
     }
 
@@ -105,29 +97,17 @@ public class CustomerFormController {
     }
 
     @FXML
-    void txtSearchOnAction(ActionEvent event) {
+    void txtSearchOnAction(ActionEvent event) throws SQLException {
         String id = txtId.getText();
 
-        String sql = "SELECT * FROM customers WHERE id = ?";
-        try {
-            Connection connection = DbConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setObject(1, id);
-
-            ResultSet resultSet = pstm.executeQuery();
-            if (resultSet.next()) {
-                String name = resultSet.getString(2);
-                String address = resultSet.getString(3);
-                String tel = resultSet.getString(4);
-
-                txtName.setText(name);
-                txtAddress.setText(address);
-                txtTel.setText(tel);
-            } else {
-                new Alert(Alert.AlertType.INFORMATION, "customer id not found!").show();
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        Customer customer = CustomerRepo.searchById(id);
+        if (customer != null) {
+            txtId.setText(customer.getId());
+            txtName.setText(customer.getName());
+            txtAddress.setText(customer.getAddress());
+            txtTel.setText(customer.getTel());
+        } else {
+            new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
         }
     }
 

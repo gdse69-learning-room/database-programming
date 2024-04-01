@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="_04-supermarket" />
         <module name="_01-jdbc-bootstrapping" />
+        <module name="_05-supermarket-mvc" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

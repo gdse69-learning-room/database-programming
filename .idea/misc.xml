@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/_02-statements/pom.xml" />
         <option value="$PROJECT_DIR$/_02-statements/_04-supermarket/pom.xml" />
         <option value="$PROJECT_DIR$/_04-supermarket/pom.xml" />
+        <option value="$PROJECT_DIR$/_05-supermarket-mvc/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
