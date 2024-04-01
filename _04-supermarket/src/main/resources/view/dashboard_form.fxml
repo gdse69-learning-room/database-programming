@@ -24,7 +24,7 @@
                 </Label>
             </children>
         </AnchorPane>
-      <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="39.0" layoutY="206.0" prefHeight="112.0" prefWidth="128.0" style="-fx-background-color: #2ecc71;" text="Customer" textFill="WHITE">
+      <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="39.0" layoutY="206.0" onAction="#btnCustomerOnAction" prefHeight="112.0" prefWidth="128.0" style="-fx-background-color: #2ecc71;" text="Customer" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="63.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -39,7 +39,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="205.0" layoutY="206.0" prefHeight="112.0" prefWidth="128.0" style="-fx-background-color: #e67e22;" text="Item" textFill="WHITE">
+      <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="205.0" layoutY="206.0" onAction="#btnItemOnAction" prefHeight="112.0" prefWidth="128.0" style="-fx-background-color: #e67e22;" text="Item" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="63.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -54,7 +54,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="368.0" layoutY="206.0" prefHeight="112.0" prefWidth="128.0" style="-fx-background-color: #e74c3c;" text="Place Order" textFill="WHITE">
+      <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="368.0" layoutY="206.0" onAction="#btnPlaceOrderOnAction" prefHeight="112.0" prefWidth="128.0" style="-fx-background-color: #e74c3c;" text="Place Order" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="63.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true">
                <image>

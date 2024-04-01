@@ -1,6 +1,7 @@
 package lk.ijse.supermarket.controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -44,6 +45,26 @@ public class DashboardFormController {
             return resultSet.getInt("customer_count");
         }
         return 0;
+    }
+
+    @FXML
+    void btnCustomerOnAction(ActionEvent event) throws IOException {
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/customer_form.fxml"));
+        Stage stage = (Stage) rootNode.getScene().getWindow();
+
+        stage.setScene(new Scene(anchorPane));
+        stage.setTitle("Dashboard Form");
+        stage.centerOnScreen();
+    }
+
+    @FXML
+    void btnItemOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnPlaceOrderOnAction(ActionEvent event) {
+
     }
 
     public void btnExitOnAction(ActionEvent actionEvent) throws IOException {
