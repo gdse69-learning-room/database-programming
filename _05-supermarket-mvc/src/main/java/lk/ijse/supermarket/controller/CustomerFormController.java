@@ -77,19 +77,12 @@ public class CustomerFormController {
         String address = txtAddress.getText();
         String tel = txtTel.getText();
 
-        String sql = "UPDATE customers SET name = ?, address = ?, tel = ? WHERE id = ?";
+        Customer customer = new Customer(id, name, address, tel);
 
         try {
-            Connection connection = DbConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setObject(1, name);
-            pstm.setObject(2, address);
-            pstm.setObject(3, tel);
-            pstm.setObject(4, id);
-
-            if (pstm.executeUpdate() > 0) {
+            boolean isUpdated = CustomerRepo.update(customer);
+            if(isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer updated!").show();
-                clearFields();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -115,23 +108,14 @@ public class CustomerFormController {
     void btnDeleteOnAction(ActionEvent event) {
         String id = txtId.getText();
 
-        String sql = "DELETE FROM customers WHERE id = ?";
-
         try {
-            Connection connection = DbConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setObject(1, id);
-
-            if (pstm.executeUpdate() > 0) {
+            boolean isDeleted = CustomerRepo.delete(id);
+            if(isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer deleted!").show();
-                clearFields();
-            } else {
-                new Alert(Alert.AlertType.INFORMATION, "customer id can't be find!").show();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-
     }
 
     @FXML

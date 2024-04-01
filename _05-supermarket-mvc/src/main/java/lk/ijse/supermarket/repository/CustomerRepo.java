@@ -1,5 +1,6 @@
 package lk.ijse.supermarket.repository;
 
+import javafx.scene.control.Alert;
 import lk.ijse.supermarket.db.DbConnection;
 import lk.ijse.supermarket.model.Customer;
 
@@ -42,5 +43,28 @@ public class CustomerRepo {
         }
 
         return null;
+    }
+
+    public static boolean update(Customer customer) throws SQLException {
+        String sql = "UPDATE customers SET name = ?, address = ?, tel = ? WHERE id = ?";
+
+        Connection connection = DbConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement(sql);
+        pstm.setObject(1, customer.getName());
+        pstm.setObject(2, customer.getAddress());
+        pstm.setObject(3, customer.getTel());
+        pstm.setObject(4, customer.getId());
+
+        return pstm.executeUpdate() > 0;
+    }
+
+    public static boolean delete(String id) throws SQLException {
+        String sql = "DELETE FROM customers WHERE id = ?";
+
+        Connection connection = DbConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement(sql);
+        pstm.setObject(1, id);
+
+        return pstm.executeUpdate() > 0;
     }
 }
