@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.supermarket.db.DbConnection;
+import lk.ijse.supermarket.model.Customer;
+import lk.ijse.supermarket.repository.CustomerRepo;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -48,6 +50,7 @@ public class CustomerFormController {
 
     @FXML
     private TextField txtTel;
+
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         String id = txtId.getText();
@@ -55,36 +58,22 @@ public class CustomerFormController {
         String address = txtAddress.getText();
         String tel = txtTel.getText();
 
-        String sql = "INSERT INTO customers VALUES(?, ?, ?, ?)";
+        Customer customer = new Customer(id, name, address, tel);
 
         try {
-            Connection connection = DbConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setObject(1, id);
-            pstm.setObject(2, name);
-            pstm.setObject(3, address);
-            pstm.setObject(4, tel);
-
-            boolean isSaved = pstm.executeUpdate() > 0;
+            boolean isSaved = CustomerRepo.save(customer);
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
                 clearFields();
             }
-
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            throw new RuntimeException(e);
         }
-    }
 
-    private void clearFields() {
-        txtId.setText("");
-        txtName.setText("");
-        txtAddress.setText("");
-        txtTel.setText("");
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event)  {
+    void btnUpdateOnAction(ActionEvent event) {
         String id = txtId.getText();
         String name = txtName.getText();
         String address = txtAddress.getText();
@@ -100,7 +89,7 @@ public class CustomerFormController {
             pstm.setObject(3, tel);
             pstm.setObject(4, id);
 
-            if(pstm.executeUpdate() > 0) {
+            if (pstm.executeUpdate() > 0) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer updated!").show();
                 clearFields();
             }
@@ -113,23 +102,14 @@ public class CustomerFormController {
     void txtSearchOnAction(ActionEvent event) throws SQLException {
         String id = txtId.getText();
 
-        String sql = "SELECT * FROM customers WHERE id = ?";
-
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, id);
-
-        ResultSet resultSet = pstm.executeQuery();
-        if(resultSet.next()) {
-            String name = resultSet.getString(2);
-            String address = resultSet.getString(3);
-            String tel = resultSet.getString(4);
-
-            txtName.setText(name);
-            txtAddress.setText(address);
-            txtTel.setText(tel);
+        Customer customer = CustomerRepo.searchById(id);
+        if (customer != null) {
+            txtId.setText(customer.getId());
+            txtName.setText(customer.getName());
+            txtAddress.setText(customer.getAddress());
+            txtTel.setText(customer.getTel());
         } else {
-            new Alert(Alert.AlertType.INFORMATION, "sorry! customer not found!").show();
+            new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
         }
     }
 
@@ -144,7 +124,7 @@ public class CustomerFormController {
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setObject(1, id);
 
-            if(pstm.executeUpdate() > 0) {
+            if (pstm.executeUpdate() > 0) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer deleted!").show();
                 clearFields();
             } else {
@@ -159,6 +139,13 @@ public class CustomerFormController {
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
+    }
+
+    private void clearFields() {
+        txtId.setText("");
+        txtName.setText("");
+        txtAddress.setText("");
+        txtTel.setText("");
     }
 
     @FXML
