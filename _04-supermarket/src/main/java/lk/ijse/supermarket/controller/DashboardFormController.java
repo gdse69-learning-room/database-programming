@@ -3,11 +3,17 @@ package lk.ijse.supermarket.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.supermarket.db.DbConnection;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DashboardFormController {
     public AnchorPane rootNode;
@@ -15,7 +21,11 @@ public class DashboardFormController {
     private int customerCount;
 
     public void initialize() {
-        customerCount = getCustomerCount();
+        try {
+            customerCount = getCustomerCount();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
         setCustomerCount(customerCount);
     }
 
@@ -23,8 +33,17 @@ public class DashboardFormController {
         lblCustomerCount.setText(String.valueOf(customerCount));
     }
 
-    private int getCustomerCount() {
-        return 5;
+    private int getCustomerCount() throws SQLException {
+        String sql = "SELECT COUNT(*) AS customer_count FROM customers";
+
+        Connection connection = DbConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement(sql);
+        ResultSet resultSet = pstm.executeQuery();
+
+        if(resultSet.next()) {
+            return resultSet.getInt("customer_count");
+        }
+        return 0;
     }
 
     public void btnExitOnAction(ActionEvent actionEvent) throws IOException {
