@@ -68,8 +68,13 @@ public class DashboardFormController {
     }
 
     @FXML
-    void btnPlaceOrderOnAction(ActionEvent event) {
+    void btnPlaceOrderOnAction(ActionEvent event) throws IOException {
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/placeorder_form.fxml"));
+        Stage stage = (Stage) rootNode.getScene().getWindow();
 
+        stage.setScene(new Scene(anchorPane));
+        stage.setTitle("Place Order Form");
+        stage.centerOnScreen();
     }
 
     public void btnExitOnAction(ActionEvent actionEvent) throws IOException {
