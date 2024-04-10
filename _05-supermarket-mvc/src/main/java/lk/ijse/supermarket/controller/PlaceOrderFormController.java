@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class PlaceOrderFormController {
 
@@ -171,6 +172,21 @@ public class PlaceOrderFormController {
         JFXButton btnRemove = new JFXButton("remove");
         btnRemove.setCursor(Cursor.HAND);
 
+        btnRemove.setOnAction((e) -> {
+            ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+
+            if(type.orElse(no) == yes) {
+                int selectedIndex = tblOrderCart.getSelectionModel().getSelectedIndex();
+                obList.remove(selectedIndex);
+
+                tblOrderCart.refresh();
+                calculateNetTotal();
+            }
+        });
+
         for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
             if(code.equals(colItemCode.getCellData(i))) {
 
@@ -183,7 +199,7 @@ public class PlaceOrderFormController {
 
                 tblOrderCart.refresh();
 
-                setNetTotal();
+                calculateNetTotal();
                 return;
             }
         }
@@ -192,11 +208,11 @@ public class PlaceOrderFormController {
         obList.add(tm);
 
         tblOrderCart.setItems(obList);
-        setNetTotal();
+        calculateNetTotal();
         txtQty.setText("");
     }
 
-    private void setNetTotal() {
+    private void calculateNetTotal() {
         int netTotal = 0;
         for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
             netTotal += (double) colTotal.getCellData(i);
