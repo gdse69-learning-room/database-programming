@@ -2,6 +2,8 @@ package lk.ijse.supermarket.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +14,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.supermarket.model.Customer;
+import lk.ijse.supermarket.repository.CustomerRepo;
+import lk.ijse.supermarket.repository.OrderRepo;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class PlaceOrderFormController {
 
@@ -22,7 +29,7 @@ public class PlaceOrderFormController {
     private JFXButton btnAddToCart;
 
     @FXML
-    private JFXComboBox<?> cmbCustomerId;
+    private JFXComboBox<String> cmbCustomerId;
 
     @FXML
     private JFXComboBox<?> cmbItemCode;
@@ -77,6 +84,46 @@ public class PlaceOrderFormController {
 
     public void initialize() {
         setDate();
+        getCurrentOrderId();
+        getCustomerIds();
+    }
+
+    private void getCustomerIds() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+
+        try {
+            List<String> idList = CustomerRepo.getIds();
+
+            for(String id : idList) {
+                obList.add(id);
+            }
+
+            cmbCustomerId.setItems(obList);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void getCurrentOrderId() {
+        try {
+            String currentId = OrderRepo.getCurrentId();
+
+            String nextOrderId = generateNextOrderId(currentId);
+            lblOrderId.setText(nextOrderId);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateNextOrderId(String currentId) {
+        if(currentId != null) {
+            String[] split = currentId.split("O");  //" ", "2"
+            int idNum = Integer.parseInt(split[1]);
+            return "O" + ++idNum;
+        }
+        return "O1";
     }
 
     private void setDate() {
@@ -101,7 +148,15 @@ public class PlaceOrderFormController {
 
     @FXML
     void cmbCustomerOnAction(ActionEvent event) {
+        String id = cmbCustomerId.getValue();
+        try {
+            Customer customer = CustomerRepo.searchById(id);
 
+            lblCustomerName.setText(customer.getName());
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
