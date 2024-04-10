@@ -7,15 +7,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.supermarket.model.Customer;
+import lk.ijse.supermarket.model.Item;
+import lk.ijse.supermarket.model.tm.CartTm;
 import lk.ijse.supermarket.repository.CustomerRepo;
+import lk.ijse.supermarket.repository.ItemRepo;
 import lk.ijse.supermarket.repository.OrderRepo;
 
 import java.io.IOException;
@@ -32,7 +34,7 @@ public class PlaceOrderFormController {
     private JFXComboBox<String> cmbCustomerId;
 
     @FXML
-    private JFXComboBox<?> cmbItemCode;
+    private JFXComboBox<String> cmbItemCode;
 
     @FXML
     private TableColumn<?, ?> colAction;
@@ -77,15 +79,43 @@ public class PlaceOrderFormController {
     private AnchorPane pane;
 
     @FXML
-    private TableView<?> tblOrderCart;
+    private TableView<CartTm> tblOrderCart;
 
     @FXML
     private TextField txtQty;
+
+    private ObservableList<CartTm> obList = FXCollections.observableArrayList();
 
     public void initialize() {
         setDate();
         getCurrentOrderId();
         getCustomerIds();
+        getItemCodes();
+        setCellValueFactory();
+    }
+
+    private void setCellValueFactory() {
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        colAction.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
+    }
+
+    private void getItemCodes() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+        try {
+            List<String> codeList = ItemRepo.getCodes();
+
+            for (String code : codeList) {
+                obList.add(code);
+            }
+            cmbItemCode.setItems(obList);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getCustomerIds() {
@@ -133,7 +163,45 @@ public class PlaceOrderFormController {
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        String code = cmbItemCode.getValue();
+        String description = lblDescription.getText();
+        int qty = Integer.parseInt(txtQty.getText());
+        double unitPrice = Double.parseDouble(lblUnitPrice.getText());
+        double total = qty * unitPrice;
+        JFXButton btnRemove = new JFXButton("remove");
+        btnRemove.setCursor(Cursor.HAND);
 
+        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+            if(code.equals(colItemCode.getCellData(i))) {
+
+                CartTm tm = obList.get(i);
+                qty += tm.getQty();
+                total = qty * unitPrice;
+
+                tm.setQty(qty);
+                tm.setTotal(total);
+
+                tblOrderCart.refresh();
+
+                setNetTotal();
+                return;
+            }
+        }
+
+        CartTm tm = new CartTm(code, description, qty, unitPrice, total, btnRemove);
+        obList.add(tm);
+
+        tblOrderCart.setItems(obList);
+        setNetTotal();
+        txtQty.setText("");
+    }
+
+    private void setNetTotal() {
+        int netTotal = 0;
+        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+            netTotal += (double) colTotal.getCellData(i);
+        }
+        lblNetTotal.setText(String.valueOf(netTotal));
     }
 
     @FXML
@@ -161,12 +229,26 @@ public class PlaceOrderFormController {
 
     @FXML
     void cmbItemOnAction(ActionEvent event) {
+        String code = cmbItemCode.getValue();
 
+        try {
+            Item item = ItemRepo.searchById(code);
+            if(item != null) {
+                lblDescription.setText(item.getDescription());
+                lblUnitPrice.setText(String.valueOf(item.getUnitPrice()));
+                lblQtyOnHand.setText(String.valueOf(item.getQtyOnHand()));
+            }
+
+            txtQty.requestFocus();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void txtQtyOnAction(ActionEvent event) {
-
+        btnAddToCartOnAction(event);
     }
 
 
