@@ -2,6 +2,7 @@ package lk.ijse.supermarket.repository;
 
 import lk.ijse.supermarket.db.DbConnection;
 import lk.ijse.supermarket.model.Item;
+import lk.ijse.supermarket.model.OrderDetail;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -55,5 +56,27 @@ public class ItemRepo {
             );
         }
         return null;
+    }
+
+    public static boolean update(List<OrderDetail> odList) throws SQLException {
+        for (OrderDetail od : odList) {
+            boolean isUpdateQty = updateQty(od.getItemCode(), od.getQty());
+            if(!isUpdateQty) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean updateQty(String itemCode, int qty) throws SQLException {
+        String sql = "UPDATE items SET qty_on_hand = qty_on_handdddd - ? WHERE code = ?";
+
+        PreparedStatement pstm = DbConnection.getInstance().getConnection()
+                .prepareStatement(sql);
+
+        pstm.setInt(1, qty);
+        pstm.setString(2, itemCode);
+
+        return pstm.executeUpdate() > 0;
     }
 }

@@ -18,6 +18,7 @@ import lk.ijse.supermarket.model.tm.CartTm;
 import lk.ijse.supermarket.repository.CustomerRepo;
 import lk.ijse.supermarket.repository.ItemRepo;
 import lk.ijse.supermarket.repository.OrderRepo;
+import lk.ijse.supermarket.repository.PlaceOrderRepo;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -250,6 +251,16 @@ public class PlaceOrderFormController {
         }
 
         PlaceOrder po = new PlaceOrder(order, odList);
+        try {
+            boolean isPlaced = PlaceOrderRepo.placeOrder(po);
+            if(isPlaced) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
