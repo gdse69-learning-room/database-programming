@@ -13,16 +13,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import lk.ijse.supermarket.model.Customer;
-import lk.ijse.supermarket.model.Item;
+import lk.ijse.supermarket.model.*;
 import lk.ijse.supermarket.model.tm.CartTm;
 import lk.ijse.supermarket.repository.CustomerRepo;
 import lk.ijse.supermarket.repository.ItemRepo;
 import lk.ijse.supermarket.repository.OrderRepo;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -227,7 +228,28 @@ public class PlaceOrderFormController {
 
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
+        String orderId = lblOrderId.getText();
+        String cusId = cmbCustomerId.getValue();
+        Date date = Date.valueOf(LocalDate.now());
 
+        var order = new Order(orderId, cusId, date);
+
+        List<OrderDetail> odList = new ArrayList<>();
+
+        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+            CartTm tm = obList.get(i);
+
+            OrderDetail od = new OrderDetail(
+                    orderId,
+                    tm.getCode(),
+                    tm.getQty(),
+                    tm.getUnitPrice()
+            );
+
+            odList.add(od);
+        }
+
+        PlaceOrder po = new PlaceOrder(order, odList);
     }
 
     @FXML
